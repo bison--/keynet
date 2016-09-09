@@ -35,6 +35,11 @@ class InterceptKeys
 
     public static void stop()
     {
+        if (lastWorkerObject != null)
+        {
+            lastWorkerObject.RequestStop();
+        }
+
         UnhookWindowsHookEx(_hookID);
     }
 
@@ -57,7 +62,6 @@ class InterceptKeys
             int vkCode = Marshal.ReadInt32(lParam);
             Keys pressedKey = (Keys)vkCode;
             
-
             if (main != null && main.isServer)
             {
                 if (pressedKey == Keys.Escape || pressedKey == Keys.Space)
