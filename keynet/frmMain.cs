@@ -19,8 +19,7 @@ namespace keynet
         {
             InitializeComponent();
         }
-
-
+                
         private void frmMain_Load(object sender, EventArgs e)
         {
             InterceptKeys.sendUdpPackets = (int)nutUdpPackets.Value;
@@ -34,12 +33,21 @@ namespace keynet
             isServer = _isServer;
             if (!isServer && !bgwReciever.IsBusy)
             {
-                bgwReciever.RunWorkerAsync();
+                bgwReciever.RunWorkerAsync(getReceiverSettings());
             }
             else
             {
                 bgwReciever.CancelAsync();
             }
+        }
+
+        public clsRecieverSettings getReceiverSettings()
+        {
+            clsRecieverSettings rc = new clsRecieverSettings();
+            rc.allowedIp = txtRecieverIp.Text;
+            rc.port = (UInt16)nutRecieverPort.Value;
+
+            return rc;
         }
 
         private void rdbClient_CheckedChanged(object sender, EventArgs e)
@@ -64,27 +72,34 @@ namespace keynet
 
         private void bgwReciever_DoWork(object sender, DoWorkEventArgs e)
         {
+            clsRecieverSettings rSettings = (clsRecieverSettings)e.Argument;
             try
             {
-                var Server = new UdpClient(8888);
-                var ResponseData = Encoding.ASCII.GetBytes("SomeResponseData");
-
-                var ClientEp = new IPEndPoint(IPAddress.Any, 0);
+                UdpClient Server = new UdpClient(rSettings.port);
+                IPEndPoint ClientEp = new IPEndPoint(IPAddress.Any, 0);
 
                 while (!bgwReciever.CancellationPending)
                 {
-                    var ClientRequestData = Server.Receive(ref ClientEp);
-                    var ClientRequest = Encoding.ASCII.GetString(ClientRequestData);
-
-                    Console.WriteLine("Recived {0} from {1}, sending response", ClientRequest, ClientEp.Address.ToString());
+                    byte[] ClientRequestData = Server.Receive(ref ClientEp);
+                    string ClientRequest = Encoding.ASCII.GetString(ClientRequestData);
+                    string senderIp = ClientEp.Address.ToString();
+                    Console.WriteLine("Recived {0} from {1}, sending response", ClientRequest, senderIp);
                     //Server.Send(ResponseData, ResponseData.Length, ClientEp);
-                    string keystring = ClientRequest;
-                    if (keystring.Contains("|"))
+                    if (rSettings.allowedIp == "" || rSettings.allowedIp == senderIp)
                     {
-                        Char delimiter = '|';
-                        string[] parts = keystring.Split(delimiter);
-                        bgwReciever.ReportProgress(int.Parse(parts[1]), parts[0]);
+                        string keystring = ClientRequest;
+                        if (keystring.Contains("|"))
+                        {
+                            Char delimiter = '|';
+                            string[] parts = keystring.Split(delimiter);
+                            bgwReciever.ReportProgress(int.Parse(parts[1]), parts[0]);
+                        }
                     }
+                    else
+                    {
+                        Console.WriteLine("BAD IP: " + senderIp);
+                    }
+
                 }
                 
                 //e.Result = keystring;
@@ -137,7 +152,7 @@ namespace keynet
                 }
                 
                 //Keys recievedKey = (Keys)e.Result;
-                bgwReciever.RunWorkerAsync();
+                bgwReciever.RunWorkerAsync(getReceiverSettings());
             }
         }
 

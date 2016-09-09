@@ -40,10 +40,18 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.nutUdpPackets = new System.Windows.Forms.NumericUpDown();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.nutRecieverPort = new System.Windows.Forms.NumericUpDown();
+            this.txtRecieverIp = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nutUdpPackets)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nutRecieverPort)).BeginInit();
             this.SuspendLayout();
             // 
             // rdbClient
@@ -103,10 +111,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(343, 208);
+            this.tabControl1.Size = new System.Drawing.Size(348, 208);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPage1
@@ -117,7 +126,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(335, 182);
+            this.tabPage1.Size = new System.Drawing.Size(340, 182);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "MODE";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -141,7 +150,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(370, 185);
+            this.tabPage2.Size = new System.Drawing.Size(340, 182);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Sender Settings";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -182,11 +191,82 @@
             0});
             this.nutUdpPackets.ValueChanged += new System.EventHandler(this.nutUdpPackets_ValueChanged);
             // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.nutRecieverPort);
+            this.tabPage3.Controls.Add(this.txtRecieverIp);
+            this.tabPage3.Controls.Add(this.label7);
+            this.tabPage3.Controls.Add(this.label6);
+            this.tabPage3.Controls.Add(this.label5);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage3.Size = new System.Drawing.Size(340, 182);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Reciever Settings";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // nutRecieverPort
+            // 
+            this.nutRecieverPort.Location = new System.Drawing.Point(71, 14);
+            this.nutRecieverPort.Maximum = new decimal(new int[] {
+            65534,
+            0,
+            0,
+            0});
+            this.nutRecieverPort.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.nutRecieverPort.Name = "nutRecieverPort";
+            this.nutRecieverPort.Size = new System.Drawing.Size(108, 20);
+            this.nutRecieverPort.TabIndex = 4;
+            this.nutRecieverPort.Value = new decimal(new int[] {
+            8888,
+            0,
+            0,
+            0});
+            // 
+            // txtRecieverIp
+            // 
+            this.txtRecieverIp.Location = new System.Drawing.Point(71, 40);
+            this.txtRecieverIp.Name = "txtRecieverIp";
+            this.txtRecieverIp.Size = new System.Drawing.Size(249, 20);
+            this.txtRecieverIp.TabIndex = 3;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(68, 63);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(141, 13);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "(empty for any, IPv4 or IPv6)";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(6, 43);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(59, 13);
+            this.label6.TabIndex = 1;
+            this.label6.Text = "allowed IP:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(36, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(29, 13);
+            this.label5.TabIndex = 0;
+            this.label5.Text = "Port:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(367, 245);
+            this.ClientSize = new System.Drawing.Size(372, 245);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.lblRecieved);
@@ -202,6 +282,9 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nutUdpPackets)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nutRecieverPort)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -220,6 +303,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown nutUdpPackets;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.NumericUpDown nutRecieverPort;
+        private System.Windows.Forms.TextBox txtRecieverIp;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
     }
 }
 
