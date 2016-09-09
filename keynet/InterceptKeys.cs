@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Net.Sockets;
 using System.Text;
 using System.Net;
+using System.Threading;
 
 class InterceptKeys
 {
@@ -19,7 +20,7 @@ class InterceptKeys
     private const int WM_KEYDOWN = 0x0100;
     private static LowLevelKeyboardProc _proc = HookCallback;
     private static IntPtr _hookID = IntPtr.Zero;
-
+    private static keynet.clsSendKeyNet lastWorkerObject = null;
    /* public static void Main()
     {
         _hookID = SetHook(_proc);
@@ -63,22 +64,33 @@ class InterceptKeys
                 {
                     Console.WriteLine(pressedKey);
                     sendId++;
-                    var Client = new UdpClient();
-                    var RequestData = Encoding.ASCII.GetBytes(pressedKey.ToString() + "|" + sendId.ToString());
-                    var ServerEp = new IPEndPoint(IPAddress.Any, 0);
 
-                    Client.EnableBroadcast = true;
-                    for (int i = 0; i < sendUdpPackets; i++)
+                    if (lastWorkerObject != null)
                     {
-                        Console.WriteLine("SENDING "+ i.ToString() +" ...");
-                        Client.Send(RequestData, RequestData.Length, new IPEndPoint(IPAddress.Broadcast, 8888));
+                        lastWorkerObject.RequestStop();
                     }
 
-                    //var ServerResponseData = Client.Receive(ref ServerEp);
-                    //var ServerResponse = Encoding.ASCII.GetString(ServerResponseData);
-                    //Console.WriteLine("Recived {0} from {1}", ServerResponse, ServerEp.Address.ToString());
+                    keynet.clsSendKeyNet workerObject = new keynet.clsSendKeyNet();
 
-                    Client.Close();
+                    workerObject.sendId = sendId;
+                    workerObject.pressedKey = pressedKey;
+                    workerObject.sendUdpPackets = sendUdpPackets;
+
+                    try
+                    {
+                        Thread workerThread = new Thread(workerObject.DoWork);
+
+                        // Start the worker thread.
+                        workerThread.Start();
+
+                        // remember the object
+                        lastWorkerObject = workerObject;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine(ex);
+                        lastWorkerObject = null;
+                    }
                 }
             }
         }
