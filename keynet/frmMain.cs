@@ -23,6 +23,7 @@ namespace keynet
 
         private void frmMain_Load(object sender, EventArgs e)
         {
+            InterceptKeys.sendUdpPackets = (int)nutUdpPackets.Value;
             InterceptKeys.main = this;
             InterceptKeys.start();
             //switchMode(false);
@@ -51,6 +52,10 @@ namespace keynet
             switchMode(true);
         }
 
+        private void nutUdpPackets_ValueChanged(object sender, EventArgs e)
+        {
+            InterceptKeys.sendUdpPackets = (int)nutUdpPackets.Value;
+        }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -135,5 +140,7 @@ namespace keynet
                 bgwReciever.RunWorkerAsync();
             }
         }
+
+
     }
 }

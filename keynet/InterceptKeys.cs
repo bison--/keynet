@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+* SOURCE: http://stackoverflow.com/questions/604410/global-keyboard-capture-in-c-sharp-application
+*/
+
+using System;
 using System.Diagnostics;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
@@ -8,6 +12,7 @@ using System.Net;
 
 class InterceptKeys
 {
+    public static int sendUdpPackets = 10;
     public static keynet.frmMain main = null;
     public static UInt64 sendId = 0;
     private const int WH_KEYBOARD_LL = 13;
@@ -63,13 +68,11 @@ class InterceptKeys
                     var ServerEp = new IPEndPoint(IPAddress.Any, 0);
 
                     Client.EnableBroadcast = true;
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < sendUdpPackets; i++)
                     {
-                        Console.WriteLine("SENDING...");
+                        Console.WriteLine("SENDING "+ i.ToString() +" ...");
                         Client.Send(RequestData, RequestData.Length, new IPEndPoint(IPAddress.Broadcast, 8888));
-
                     }
-                    
 
                     //var ServerResponseData = Client.Receive(ref ServerEp);
                     //var ServerResponse = Encoding.ASCII.GetString(ServerResponseData);
